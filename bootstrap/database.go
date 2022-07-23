@@ -3,6 +3,7 @@ package bootstrap
 import (
 	"errors"
 	"fmt"
+	"gohub/app/models/user"
 	"gohub/pkg/config"
 	"gohub/pkg/database"
 	"time"
@@ -21,11 +22,11 @@ func SetupDB() {
 		// 构建 DSN 信息
 		dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=%v&parseTime=True&multiStatements=true&loc=Local",
 			config.Get("database.mysql.username"),
-			config.Get("database.mysql.pasword"),
+			config.Get("database.mysql.password"),
 			config.Get("database.mysql.host"),
 			config.Get("database.mysql.port"),
 			config.Get("database.mysql.database"),
-			config.Get("database.mysql.chaset"))
+			config.Get("database.mysql.charset"))
 		dbConfig = mysql.New(mysql.Config{
 			DSN: dsn,
 		})
@@ -43,7 +44,9 @@ func SetupDB() {
 	// 设置最大连接数
 	database.SQLDB.SetMaxOpenConns(config.GetInt("database.max_open_connections"))
 	// 设置最大空闲连接数
-	database.SQLDB.SetMaxIdleConns(config.GetInt("database.max_idle_connectionss"))
+	database.SQLDB.SetMaxIdleConns(config.GetInt("database.max_idle_connections"))
 	// 设置连接超时
 	database.SQLDB.SetConnMaxLifetime(time.Duration(config.GetInt("database.max_life_seconds")) * time.Second)
+	// 自动迁移
+	database.DB.AutoMigrate(&user.User{})
 }

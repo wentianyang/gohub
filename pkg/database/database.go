@@ -28,6 +28,7 @@ func Connect(dbConfig gorm.Dialector, _logger gormlogger.Interface) {
 
 	// 获取底层 sqlDB
 	SQLDB, err = DB.DB()
+
 	if err != nil {
 		fmt.Println(err.Error())
 	}
