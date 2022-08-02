@@ -72,6 +72,11 @@ func getEncoder() zapcore.Encoder {
 	return zapcore.NewJSONEncoder(encoderConfig)
 }
 
+// 自定义友好的时间格式
+func customTimeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
+	enc.AppendString(t.Format("2006-01-02 15:04:05"))
+}
+
 func getLogWriter(fileName string, maxSize, maxBackup, maxAge int, compress bool, logType string) zapcore.WriteSyncer {
 	// 如果配置了按照日期记录日志文件
 	if logType == "daily" {
