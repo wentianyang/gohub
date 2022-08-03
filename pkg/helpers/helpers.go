@@ -1,6 +1,10 @@
 package helpers
 
-import "reflect"
+import (
+	"fmt"
+	"reflect"
+	"time"
+)
 
 func Empty(val interface{}) bool {
 	if val == nil {
@@ -24,4 +28,9 @@ func Empty(val interface{}) bool {
 		return v.IsNil()
 	}
 	return reflect.DeepEqual(val, reflect.Zero(reflect.TypeOf(val)).Interface())
+}
+
+// 输出为小数点后 3 位的 ms (microsecond 毫秒, 千分之一秒)
+func MicrosecondsStr(elapsed time.Duration) string {
+	return fmt.Sprintf("%.3fms", float64(elapsed.Nanoseconds())/1e6)
 }

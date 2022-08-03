@@ -1,6 +1,7 @@
 package bootstrap
 
 import (
+	"gohub/app/http/middlewares"
 	"gohub/routes"
 	"net/http"
 	"strings"
@@ -22,7 +23,7 @@ func SetupRoutes(router *gin.Engine) {
 
 // 注册全局中间件
 func registerGlobalMiddleWare(router *gin.Engine) {
-	router.Use(gin.Logger(), gin.Recovery())
+	router.Use(middlewares.Logger(), gin.Recovery())
 }
 
 // 处理 404 错误
