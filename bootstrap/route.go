@@ -23,7 +23,7 @@ func SetupRoutes(router *gin.Engine) {
 
 // 注册全局中间件
 func registerGlobalMiddleWare(router *gin.Engine) {
-	router.Use(middlewares.Logger(), gin.Recovery())
+	router.Use(middlewares.Logger(), middlewares.Recovery())
 }
 
 // 处理 404 错误
