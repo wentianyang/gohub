@@ -2,7 +2,7 @@ package config
 
 import "gohub/pkg/config"
 
-func Init() {
+func init() {
 	config.AddEnv("redis", func() map[string]interface{} {
 		return map[string]interface{}{
 			"host":     config.Env("REDIS_HOST", "127.0.0.1"),
