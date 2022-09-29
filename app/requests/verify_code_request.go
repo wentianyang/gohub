@@ -41,6 +41,7 @@ func VerifyCodePhone(data interface{}, c *gin.Context) map[string][]string {
 	errs := validate(data, rules, messages)
 
 	// 图片验证码
+	// 判断 data 是否是 VerifyCodePhoneRequet 类型
 	_data := data.(*VerifyCodePhoneRequest)
 	if ok := captcha.NewCaptcha().VerifyCaptcha(_data.CaptchaID, _data.CaptchaAnswer); !ok {
 		errs["captcha_answer"] = append(errs["captcha_answer"], "图片验证码错误")
