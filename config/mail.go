@@ -11,12 +11,12 @@ func init() {
 				"host":     config.Env("MAIL_HOST", "localhost"),
 				"port":     config.Env("MAIL_PORT", 1025),
 				"username": config.Env("MAIL_USERNAME", ""),
-				"password": config.Env("MAIL_PASSWORD", "")
+				"password": config.Env("MAIL_PASSWORD", ""),
 			},
 
 			"from": map[string]interface{}{
 				"address": config.Env("MAIL_FROM_ADDRESS", "gohub@example.com"),
-				"name":config.Env("MAIL_FROM_NAME", "Gohub")
+				"name":    config.Env("MAIL_FROM_NAME", "Gohub"),
 			},
 		}
 	})

@@ -2,12 +2,15 @@
 package verifycode
 
 import (
+	"fmt"
 	"gohub/pkg/app"
 	"gohub/pkg/config"
 	"gohub/pkg/helpers"
 	"gohub/pkg/logger"
+	"gohub/pkg/mail"
 	"gohub/pkg/redis"
 	"gohub/pkg/sms"
+
 	"strings"
 	"sync"
 )
@@ -49,6 +52,30 @@ func (vc *VerifyCode) SendSms(phone string) bool {
 		Template: config.GetString("sms.aliyun.template_code"),
 		Data:     map[string]string{"code": code},
 	})
+}
+
+func (vc *VerifyCode) SendEmail(email string) error {
+
+	// 1. 生成验证码
+	code := vc.generateVerifyCode(email)
+
+	// 2. 做环境判断,方便测试
+	if !app.IsProduction() && strings.HasSuffix(email, config.GetString("verifycode.debug_email_suffix")) {
+		return nil
+	}
+
+	// 3. 发送邮件
+	content := fmt.Sprintf("<h1> 您的邮件验证码是: %v </h1>", code)
+	mail.NewMailer().Send(mail.Email{
+		From: mail.From{
+			Address: config.GetString("mail.from.address"),
+			Name:    config.GetString("mail.from.name"),
+		},
+		To:      []string{email},
+		Subject: "您的验证码",
+		HTML:    []byte(content),
+	})
+	return nil
 }
 
 // CheckAnswer 检查用户提交的验证码是否正确, key 可以是手机号 或者 email
